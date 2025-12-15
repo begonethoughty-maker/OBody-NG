@@ -66,6 +66,10 @@ type outfitsForceRefit = Annotated[List[OutfitName], Field(default=[],
 type blacklistedPresetsShowInOBodyMenu = Annotated[
     bool, Field(default=True, description="Whether you want the blacklisted presets to show in the O menu or not.")]
 
+type refitOutfitPresetsFemale = Annotated[Dict[OutfitName, PresetName], Field(default={}, description="Here you can write outfit name and preset name pairs to enforce a specific ORefit preset for a specific outfits.")]
+
+type refitOutfitPresetsMale = Annotated[Dict[OutfitName, PresetName], Field(default={}, description="Here you can write outfit name and preset name pairs to enforce a specific ORefit preset for a specific outfits.")]
+
 
 class OBodyConfigModel(BaseModel):
     model_config = ConfigDict(extra='forbid', strict=True, regex_engine='python-re', populate_by_name=True)
@@ -91,13 +95,15 @@ class OBodyConfigModel(BaseModel):
     outfitsForceRefit: outfitsForceRefit
     blacklistedPresetsFromRandomDistribution: blacklistedPresetsFromRandomDistribution
     blacklistedPresetsShowInOBodyMenu: blacklistedPresetsShowInOBodyMenu
+    refitOutfitPresetsFemale: refitOutfitPresetsFemale
+    refitOutfitPresetsMale: refitOutfitPresetsMale
 
 
 def main(using_rapidjson: bool):
     # src: https://www.nexusmods.com/skyrimspecialedition/articles/4756
     test_examples: list[str] = [
         """{"npcFormID":{"Skyrim.esm":{"00013BA3":["Bardmaid"],"00013BA2":["Wench Preset","IA - Demonic","Tasty Temptress - BHUNP Preset (Nude)"]},"Immersive Wenches.esp":{"0403197F":["Petite Mommy"],"0400C3C0":["s4rMs' - Gaia"]}},"npc":{"Mjoll the Lioness":["Hardass Warrior"],"Haelga":["Petite Mommy","IA - Demonic","s4rMs' - Gaia"],"Temba Wide-Arm":["Tasty Temptress - BHUNP Preset (Nude)"]},"factionFemale":{"SolitudeBardsCollegeFaction":["Hardass Warrior","Fantasy Figure - Nude","Royal Battle Maiden - BHUNP"],"TownSolitudeFaction":["QC-The Everywoman"],"CollegeofWinterholdFaction":["Tasty Temptress - BHUNP Preset (Nude)"]},"factionMale":{"CompanionsCircle":["HIMBO Muscled"],"TownWhiterunFaction":["HIMBO Simple"]},"npcPluginFemale":{"Bijin_AIO_Merged.esp":["Hardass warrior","SilverR1baka"],"Skyrim.esm":["Nordic Oppai - BHUNP - Nude"]},"npcPluginMale":{"Dawnguard.esm":["HIMBO Simple"]},"raceFemale":{"NordRace":["QC-The Everywoman","D*sney Mommy NG","Fantasy Figure - Nude"],"OrcRace":["Hardass warrior"],"WoodElfRace":["-Zeroed Sliders-"]},"raceMale":{"NordRace":["HIMBO Simple"],"BretonRace":["HIMBO Simple"]},"blacklistedNpcs":["Saffir","Vilja","Lydia"],"blacklistedNpcsFormID":{"Skyrim.esm":["00013BB8","00013BBD"],"CS_Vayne.esp":["0400083D","0402CC59"]},"blacklistedNpcsPluginFemale":["CS_Coralyn.esp","3DNPC.esp","Hearthfires.esm"],"blacklistedNpcsPluginMale":["Immersive Wenches.esp","018Auri.esp"],"blacklistedRacesFemale":["ElderRace","ArgonianRace"],"blacklistedRacesMale":["ElderRace","DarkElfRace"],"blacklistedOutfitsFromORefitFormID":{"[full_inu] Queen Marika's Dress.esp":["FE000817"]},"blacklistedOutfitsFromORefit":["Demon Hunter's Clothes Light","White Sexy Top Ouvert","Wrap Around Dress (Slutty) - 14"],"blacklistedOutfitsFromORefitPlugin":["[COCO] Mysterious Mage.esp"],"outfitsForceRefitFormID":{"[full_inu] Queen Marika's Dress.esp":["FE000803"]},"outfitsForceRefit":["Demon Hunter's Lingerie Light","Demon Hunter's Lingerie Heavy"],"blacklistedPresetsFromRandomDistribution":["- Zeroed Sliders -","-Zeroed Sliders-","Zeroed Sliders","s4mRs'' - Juno","Royal Battlemaiden - BHUNP"],"blacklistedPresetsShowInOBodyMenu":true}""",
-        """{"npcFormID":{},"npc":{},"factionFemale":{},"factionMale":{},"npcPluginFemale":{},"npcPluginMale":{},"raceFemale":{},"raceMale":{},"blacklistedNpcs":[],"blacklistedNpcsFormID":{},"blacklistedNpcsPluginFemale":[],"blacklistedNpcsPluginMale":[],"blacklistedRacesFemale":["ElderRace"],"blacklistedRacesMale":["ElderRace"],"blacklistedOutfitsFromORefitFormID":{},"blacklistedOutfitsFromORefit":["LS Force Naked","OBody Nude 32"],"blacklistedOutfitsFromORefitPlugin":[],"outfitsForceRefitFormID":{},"outfitsForceRefit":[],"blacklistedPresetsFromRandomDistribution":["- Zeroed Sliders -","-Zeroed Sliders-","Zeroed Sliders","HIMBO Zero for OBody"],"blacklistedPresetsShowInOBodyMenu":true}""",
+        """{"npcFormID":{},"npc":{},"factionFemale":{},"factionMale":{},"npcPluginFemale":{},"npcPluginMale":{},"raceFemale":{},"raceMale":{},"blacklistedNpcs":[],"blacklistedNpcsFormID":{},"blacklistedNpcsPluginFemale":[],"blacklistedNpcsPluginMale":[],"blacklistedRacesFemale":["ElderRace"],"blacklistedRacesMale":["ElderRace"],"blacklistedOutfitsFromORefitFormID":{},"blacklistedOutfitsFromORefit":["LS Force Naked","OBody Nude 32"],"blacklistedOutfitsFromORefitPlugin":[],"outfitsForceRefitFormID":{},"outfitsForceRefit":[],"blacklistedPresetsFromRandomDistribution":["- Zeroed Sliders -","-Zeroed Sliders-","Zeroed Sliders","HIMBO Zero for OBody"],"blacklistedPresetsShowInOBodyMenu":true,"refitOutfitPresetsFemale":{},"refitOutfitPresetsFemale":{}}""",
     ]
     base_dir = Path(__file__).parent.parent.resolve()
     try:

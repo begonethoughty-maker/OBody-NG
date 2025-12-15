@@ -57,6 +57,8 @@ namespace Parser {
         std::vector<categorizedList> blacklistedOutfitCategorySet;
         std::vector<categorizedList> forceRefitOutfitCategorySet;
 
+        std::optional<PresetManager::Preset> GetRefitPresetFromEquippedItems(RE::Actor* a_actor, bool female);
+
     private:
         JSONParser() = default;
         static JSONParser instance;

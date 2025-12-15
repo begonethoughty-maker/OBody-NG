@@ -63,6 +63,12 @@
     },
     "blacklistedPresetsShowInOBodyMenu": {
       "$ref": "#/definitions/blacklistedPresetsShowInOBodyMenu"
+    },
+    "refitOutfitPresetsFemale": {
+      "$ref": "#/definitions/refitOutfitPresets"
+    },
+    "refitOutfitPresetsMale": {
+      "$ref": "#/definitions/refitOutfitPresets"
     }
   },
   "title": "OBodyConfigModel",
@@ -344,6 +350,17 @@
       "description": "Same as above, but for males. ONLY put male body presets here (if you don't have any, leave it empty)!",
       "propertyNames": {
         "$ref": "#/definitions/RaceName"
+      },
+      "type": "object"
+    },
+    "refitOutfitPresets": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "description": "Here you can write outfit name and preset name pairs to enforce a specific ORefit preset for a specific outfits.",
+      "propertyNames": {
+        "$ref": "#/definitions/OutfitName"
       },
       "type": "object"
     }

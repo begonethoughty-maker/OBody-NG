@@ -723,4 +723,49 @@ namespace Parser {
 
         return std::nullopt;
     }
+
+    std::optional<PresetManager::Preset> JSONParser::GetRefitPresetFromEquippedItems(RE::Actor* a_actor, bool female) {
+        const auto refitOutfitPresetsNode {
+            presetDistributionConfig.FindMember(female ? "refitOutfitPresetsFemale" : "refitOutfitPresetsMale")
+        };
+
+        if (refitOutfitPresetsNode == presetDistributionConfig.MemberEnd()) {
+            return std::nullopt;
+        }
+
+        const auto& refitOutfitPresetsObject = refitOutfitPresetsNode->value;
+
+        if (refitOutfitPresetsObject.MemberCount() == 0) {
+            return std::nullopt;
+        }
+
+        const auto& presetContainer{PresetManager::PresetContainer::GetInstance()};
+
+        const RE::BGSBipedObjectForm::BipedObjectSlot slots[3] = {
+            RE::BGSBipedObjectForm::BipedObjectSlot::kBody,
+            RE::BGSBipedObjectForm::BipedObjectSlot::kModChestPrimary,
+            RE::BGSBipedObjectForm::BipedObjectSlot::kModChestSecondary
+        };
+
+        for (RE::BGSBipedObjectForm::BipedObjectSlot slot : slots) {
+            auto outfit{a_actor->GetWornArmor(slot)};
+            if (outfit) {
+                const auto refitOneOutfitPresetNode = refitOutfitPresetsObject.FindMember(outfit->GetName());
+                if (refitOneOutfitPresetNode == refitOutfitPresetsObject.MemberEnd()) {
+                    continue;
+                }
+
+                const auto presetName{refitOneOutfitPresetNode->value.GetString()};
+
+                const auto preset{PresetManager::GetPresetByNameForRandom(female ? presetContainer.allFemalePresets : presetContainer.allMalePresets, presetName)};
+
+                if(preset) {
+                    return preset;
+                }
+            }
+        }
+
+        return std::nullopt;
+    }
+
 }  // namespace Parser
