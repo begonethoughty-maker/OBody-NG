@@ -185,9 +185,18 @@ namespace PresetManager {
             if (stl::cmp(preset.name, a_name)) return preset;
         }
 
-        logger::info("Preset not found, choosing a random one.");
-        const auto& container{PresetManager::PresetContainer::GetInstance()};
-        return GetRandomPreset(female ? container.femalePresets : container.malePresets);
+        logger::info("Preset not found, choosing !UltimateBody.");
+
+const auto& container{PresetManager::PresetContainer::GetInstance()};
+const auto& presets = female ? container.femalePresets : container.malePresets;
+
+for (auto& preset : presets) {
+    if (stl::cmp(preset.name, "!UltimateBody")) {
+        return preset;
+    }
+}
+
+return GetRandomPreset(presets);
     }
 
     Preset GetRandomPreset(const PresetSet& a_presetSet) {
