@@ -196,7 +196,7 @@ for (auto& preset : presets) {
     }
 }
 
-return GetRandomPreset(presets);
+return {};
     }
 
     Preset GetRandomPreset(const PresetSet& a_presetSet) {
