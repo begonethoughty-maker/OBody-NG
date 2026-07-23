@@ -298,4 +298,13 @@ return {};
         constexpr std::array unp{"unp"sv, "coco"sv, "bhunp"sv, "uunp"sv};
         return stl::contains(a_body, unp) ? BodyType::UNP : BodyType::CBBE;
     }
+Preset GetDefaultPreset(bool female)
+{
+    const auto& container = PresetContainer::GetInstance();
+
+    return GetPresetByName(
+        female ? container.femalePresets : container.malePresets,
+        "!UltimateBody",
+        female);
+}
 }  // namespace PresetManager
