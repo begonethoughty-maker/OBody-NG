@@ -250,12 +250,11 @@ namespace Body {
             }
         }
 
-        // If we got here without a preset, then we just fetch one randomly
-        if (!preset.has_value()) {
-            logger::info("No preset defined for this actor, getting it randomly");
-            preset =
-                PresetManager::GetRandomPreset(female ? presetContainer.femalePresets : presetContainer.malePresets);
-        }
+        // If we got here without a preset, always use the default preset
+if (!preset.has_value()) {
+    logger::info("No preset defined for this actor, using !UltimateBody");
+    preset = PresetManager::GetDefaultPreset(female);
+}
 
         logger::info("Preset {} will be applied to {}", preset->name, actorName);
 
