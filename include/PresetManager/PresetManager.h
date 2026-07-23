@@ -146,4 +146,5 @@ namespace PresetManager {
     void AddSliderToSet(SliderSet& a_sliderSet, Slider&& a_slider, bool a_inverted = false);
 
     BodyType GetBodyType(std::string_view a_body);
+    Preset GetDefaultPreset(bool female);
 }  // namespace PresetManager
