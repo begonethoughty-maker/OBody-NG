@@ -225,7 +225,7 @@ namespace Body {
         }
 
         // First, we attempt to get the NPC's preset from the keys npcFormID and npc from the JSON
-        std::optional<Preset> preset{jsonParser.GetNPCPreset(actorName, actorID, female)};
+        std::optional<Preset> preset{PresetManager::GetDefaultPreset(female)};
 
         if (!preset.has_value()) {
             auto actorRace{stl::get_editorID(actorBase->GetRace()->As<RE::TESForm>())};
